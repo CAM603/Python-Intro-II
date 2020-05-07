@@ -1,10 +1,10 @@
 from room import Room
-
+from player import Player
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                    "North of you, the cave mount beckons"),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
@@ -38,6 +38,15 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
+# print(cam.current_room)
+# print(f'Player {cam.name} is in {cam.current_room.name}')
+# cam.change_room(cam.current_room.n_to)
+# print(cam.current_room)
+# print(f'Player {cam.name} is in {cam.current_room.name}')
+# cam.change_room(cam.current_room.e_to)
+# print(cam.current_room)
+# print(f'Player {cam.name} is in {cam.current_room.name}')
+
 
 # Write a loop that:
 #
@@ -49,3 +58,74 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+def intro():
+    print('\nHello brave warrior, welcome to the game...\n')
+    print('\nEnter [n] to travel north, [s] for south, [e] for east, [w] for west and [q] if you wish to end the game\n')
+
+def start():
+    global name
+    name = input('\nWhat is your name?: \n')
+    print(f'\n{name}... travel at your own risk...HAHAHAHAHA! \n')
+    
+    return name
+
+
+name = ''
+intro()
+start()
+player = Player(name, room['outside'])
+
+while True:
+    print(
+        f'\nPlayer {player.name} is in the {player.current_room.name}. {player.current_room.description}\n')
+    selection = input('\nWhich direction will you travel? [n] [s] [e] [w] [q]: \n')
+    if selection == 'q':
+        print("Quitting...")
+        break
+
+    try:
+        if selection == 'n':
+            if player.current_room.n_to == None:
+                selection = input(
+                    '\nYou ran into a wall silly! Are you okay? (y/n):\n')
+                if selection == 'y':
+                    continue
+                else:
+                    continue
+            else:
+                player.change_room(player.current_room.n_to)
+        elif selection == 's':
+            if player.current_room.s_to == None:
+                selection = input(
+                    '\nYou ran into a wall silly! Are you okay? (y/n):\n')
+                if selection == 'y':
+                    continue
+                else:
+                    continue
+            else:
+                player.change_room(player.current_room.s_to)
+        elif selection == 'e':
+            if player.current_room.e_to == None:
+                selection = input(
+                    '\nYou ran into a wall silly! Are you okay? (y/n):\n')
+                if selection == 'y':
+                    continue
+                else:
+                    continue
+            else:
+                player.change_room(player.current_room.e_to)
+        elif selection == 'w':
+            if player.current_room.w_to == None:
+                selection = input(
+                    '\nYou ran into a wall silly! Are you okay? (y/n):\n')
+                if selection == 'y':
+                    continue
+                else:
+                    continue
+            else:
+                player.change_room(player.current_room.w_to)
+        else:
+            print('Your only choices are [n] [s] [e] [w] [q]')
+    except AttributeError:
+        print('Oh no')
