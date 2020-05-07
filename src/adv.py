@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 # Declare all the rooms
 
 room = {
@@ -21,6 +22,10 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
+# Declare items
+item = {
+    'sword': Item("Gladius", "The sword is short, featuring a thick and wide blade.")
+}
 
 # Link rooms together
 
@@ -33,20 +38,8 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-#
-# Main
-#
-
-# Make a new player object that is currently in the 'outside' room.
-# print(cam.current_room)
-# print(f'Player {cam.name} is in {cam.current_room.name}')
-# cam.change_room(cam.current_room.n_to)
-# print(cam.current_room)
-# print(f'Player {cam.name} is in {cam.current_room.name}')
-# cam.change_room(cam.current_room.e_to)
-# print(cam.current_room)
-# print(f'Player {cam.name} is in {cam.current_room.name}')
-
+# Add items to room
+room['foyer'].add_item(item['sword'])
 
 # Write a loop that:
 #
@@ -77,9 +70,12 @@ start()
 player = Player(name, room['outside'])
 
 while True:
-    print(
-        f'\nPlayer {player.name} is in the {player.current_room.name}. {player.current_room.description}\n')
+    
+    print(f'\nPlayer {player.name} is in the {player.current_room.name}. {player.current_room.description}.\n')
+    player.current_room.speak_items()
+    
     selection = input('\nWhich direction will you travel? [n] [s] [e] [w] [q]: \n')
+
     if selection == 'q':
         print("Quitting...")
         break
