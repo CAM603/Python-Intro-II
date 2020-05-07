@@ -86,43 +86,64 @@ while True:
 
     try:
         if selection == 'n':
-            if player.current_room.n_to == None:
+            if player.current_room.name == 'Grand Overlook':
                 selection = input(
-                    '\nYou ran into a wall silly! Are you okay? (y/n):\n')
+                    '\nYou fell off the cliff silly! If you stay here, you are sure to succumb to your wounds...climb back up? (y/n):\n')
                 if selection == 'y':
                     continue
                 else:
+                    break
+            elif player.current_room.name == 'Treasure Chamber':
+                selection = input(
+                    '\nYou stubbed your toe on the treasure chest silly! It hurts but you can still walk, will you continue? (y/n):\n')
+                if selection == 'y':
                     continue
+                else:
+                    break
             else:
                 player.change_room(player.current_room.n_to)
         elif selection == 's':
-            if player.current_room.s_to == None:
+            if player.current_room.name == 'Outside Cave Entrance':
                 selection = input(
-                    '\nYou ran into a wall silly! Are you okay? (y/n):\n')
+                    '\nThe cave is to the north! Are you trying to go home already? (y/n):\n')
                 if selection == 'y':
-                    continue
+                    break
                 else:
                     continue
             else:
                 player.change_room(player.current_room.s_to)
         elif selection == 'e':
-            if player.current_room.e_to == None:
+            if player.current_room.name == 'Outside Cave Entrance':
                 selection = input(
-                    '\nYou ran into a wall silly! Are you okay? (y/n):\n')
+                    '\nThe cave is to the north! Are you trying to go home already? (y/n):\n')
+                if selection == 'y':
+                    break
+                else:
+                    continue
+            elif player.current_room.name == 'Narrow Passage' or player.current_room.name == 'Treasure Chamber' or player.current_room.name == 'Grand Overlook':
+                selection = input(
+                    '\nYou ran into a wall! Your nose is bleeding but you can still continue, will you? (y/n):\n')
                 if selection == 'y':
                     continue
                 else:
-                    continue
+                    break
             else:
                 player.change_room(player.current_room.e_to)
         elif selection == 'w':
-            if player.current_room.w_to == None:
+            if player.current_room.name == 'Outside Cave Entrance':
                 selection = input(
-                    '\nYou ran into a wall silly! Are you okay? (y/n):\n')
+                    '\nThe cave is to the north! Are you trying to go home already? (y/n):\n')
+                if selection == 'y':
+                    break
+                else:
+                    continue
+            elif player.current_room.name == 'Narrow Passage' or player.current_room.name == 'Treasure Chamber' or player.current_room.name == 'Foyer' or player.current_room.name == 'Grand Overlook':
+                selection = input(
+                    '\nYou ran into a wall! Your nose is bleeding but you can still continue, will you? (y/n):\n')
                 if selection == 'y':
                     continue
                 else:
-                    continue
+                    break
             else:
                 player.change_room(player.current_room.w_to)
         else:
