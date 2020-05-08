@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from item import Sword, Valuable
+import random
 
 # Declare some colors
 GREEN = "\033[0;32;40m"
@@ -109,6 +110,19 @@ def start():
     return name
 
 
+def random_fail():
+    num = random.randrange(0, 5)
+
+    possibilities = [
+        f"\n{RED}You ran into a wall! Your nose is bleeding but you can still continue, will you? (y/n):\n",
+        f"\n{RED}🕸 🕸 🕸 🕸 🕸 🕸\nYou walked into a spider web!\n🕸 🕸 🕸 🕸 🕸 🕸\nYou didn't see any spiders but now You're itchy everywhere. 🕷\n Continue? (y/n):\n",
+        f"\n{RED}You set off a trap and rocks bury the path ahead.\nCan't go that way anymore. Continue? (y/n):\n",
+        f"\n{RED}Whoa! A dead body! 💀 Probably shouldn't go that way...Are you tough enough to continue? (y/n):\n",
+        f"\n{RED}🦇🦇🦇🦇🦇\n 🦇🦇🦇🦇🦇\n Looks like a dead end full of bats! One of them pooped on you. Continue? (y/n):\n",
+    ]
+    return possibilities[num]
+
+
 def pickup_item(item_name):
     room_list = player.current_room.items
     if not any(d.name == item_name for d in room_list):
@@ -161,10 +175,10 @@ while True:
             if player.current_room.name == "Grand Overlook":
                 selection = input(
                     RED
-                    + "\nYou fell off the cliff silly! If you stay here, you are sure to succumb to your wounds...climb back up? (y/n):\n"
+                    + "\nYou fell off the cliff silly!\n If you stay here, you are sure to succumb to your wounds...climb back up? (y/n): \n"
                 )
                 if selection == "y":
-                    continue
+                    pass
                 else:
                     break
             elif player.current_room.name == "Treasure Chamber":
@@ -209,10 +223,7 @@ while True:
                 or player.current_room.name == "Treasure Chamber"
                 or player.current_room.name == "Grand Overlook"
             ):
-                selection = input(
-                    RED
-                    + "\nYou ran into a wall! Your nose is bleeding but you can still continue, will you? (y/n):\n"
-                )
+                selection = input(random_fail())
                 if selection == "y":
                     continue
                 else:
@@ -235,10 +246,7 @@ while True:
                 or player.current_room.name == "Foyer"
                 or player.current_room.name == "Grand Overlook"
             ):
-                selection = input(
-                    RED
-                    + "\nYou ran into a wall! Your nose is bleeding but you can still continue, will you? (y/n):\n"
-                )
+                selection = input(random_fail())
                 if selection == "y":
                     continue
                 else:

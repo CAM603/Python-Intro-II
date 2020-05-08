@@ -1,8 +1,5 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
-PURPLE = "\033[1;35;40m"
-
-
 class Player:
     def __init__(self, name, current_room, items=None):
         self.name = name
@@ -12,10 +9,10 @@ class Player:
 
     def check_items(self):
         if len(self.items) == 0:
-            print(PURPLE + "\n nothing in the bag \n")
+            print("\n nothing in the bag \n")
         else:
             for item in self.items:
-                print(f"\n{PURPLE}A {item}\n")
+                print(f"\nA {item}\n")
 
     def change_room(self, room):
         self.current_room = room

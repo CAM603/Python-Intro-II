@@ -1,5 +1,4 @@
 PURPLE = "\033[1;35;40m"
-YELLOW = "\033[1;33;40m"
 
 
 class Item:
@@ -31,4 +30,4 @@ class Valuable(Item):
         super().__init__(name, description)
 
     def __str__(self):
-        return f"{YELLOW}{self.description}"
+        return f"{self.description}"
