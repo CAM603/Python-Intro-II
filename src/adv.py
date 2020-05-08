@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
-from item import Item
+from item import Sword, Valuable
+
 # Declare all the rooms
 
 room = {
@@ -18,13 +19,14 @@ the distance, but there is no way across the chasm."""),
 to north. The smell of gold permeates the air."""),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
-chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+chamber! There is a large treasure chest towards the north..."""),
 }
 
 # Declare items
 item = {
-    'sword': Item("Gladius", "The sword is short, featuring a thick and wide blade.")
+    'gladius': Sword("Gladius", "The sword is short, featuring a thick and wide blade."),
+    'needle': Sword("Needle", "The sword is small, like a needle, but the blade is strong. Best for turning enemies into swiss cheese."),
+    'gold': Valuable("Gold", "A large golden nugget, this is what everyone has been risking their lives for!")
 }
 
 # Link rooms together
@@ -39,7 +41,9 @@ room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
 # Add items to room
-room['foyer'].add_item(item['sword'])
+room['foyer'].add_item(item['gladius'])
+room['foyer'].add_item(item['needle'])
+room['treasure'].add_item(item['gold'])
 
 # Write a loop that:
 #
@@ -54,7 +58,7 @@ room['foyer'].add_item(item['sword'])
 
 def intro():
     print('\nHello brave warrior, welcome to the game...\n')
-    print('\nEnter [n] to travel north, [s] for south, [e] for east, [w] for west and [q] if you wish to end the game\n')
+    print('\nEnter [n] to travel north, [s] for south, [e] for east, [w] for west, [l] to look around, [i] to see your items and [q] if you wish to end the game\n')
 
 def start():
     global name
@@ -63,6 +67,31 @@ def start():
     
     return name
 
+def pickup_item(item_name):
+    room_list = player.current_room.items
+    if not any(d.name == item_name for d in room_list):
+        print(f'{item_name} is not here')
+    else:
+        for item in room_list:
+            if item_name == item.name:
+                player.add_item(item)
+                player.current_room.remove_item(item)
+                item.on_take()
+                break
+            else:
+                pass
+
+def drop_item(item_name):
+    player_items = player.items
+    if not any(d.name == item_name for d in player_items):
+        print(f'{item_name} is not in your bag...')
+    else:
+        for item in player_items:
+            if item_name == item.name:
+                player.remove_item(item)
+                player.current_room.add_item(item)
+            else:
+                pass
 
 name = ''
 intro()
@@ -71,8 +100,7 @@ player = Player(name, room['outside'])
 
 while True:
     
-    print(f'\nPlayer {player.name} is in the {player.current_room.name}. {player.current_room.description}.\n')
-    player.current_room.speak_items()
+    print(f'\n{player.name} is in the {player.current_room.name}. {player.current_room.description}.\n')
     
     selection = input('\nWhich direction will you travel? [n] [s] [e] [w] [q]: \n')
 
@@ -91,11 +119,16 @@ while True:
                     break
             elif player.current_room.name == 'Treasure Chamber':
                 selection = input(
-                    '\nYou stubbed your toe on the treasure chest silly! It hurts but you can still walk, will you continue? (y/n):\n')
+                    '\nYou stubbed your toe on the treasure chest silly! It hurts but you can still walk, and the chest opened! Look inside? (y/n):\n')
                 if selection == 'y':
-                    continue
+                    player.current_room.speak_items()
+                    selection = input('\nTake the treasure? (y/n): \n')
+                    if selection == 'no':
+                        pass
+                    else:
+                        pickup_item('Gold')
                 else:
-                    break
+                    continue
             else:
                 player.change_room(player.current_room.n_to)
         elif selection == 's':
@@ -142,7 +175,31 @@ while True:
                     break
             else:
                 player.change_room(player.current_room.w_to)
+        elif selection == 'l':
+            if len(player.current_room.items) == 0:
+                print(f'\n{player.name} looks around and sees nothing of use...what a waste of your time.\n')
+            else:
+                print(f'\n{player.name} looks around and sees: \n')
+                player.current_room.speak_items()
+                selection = input('\nWill you take anything from this room? [take] [name of item] or [no]: \n')
+                if selection == 'no':
+                    pass
+                else:
+                    item = selection.split(' ')
+                    pickup_item(item[1])
+        elif selection == 'i':
+            if len(player.items) == 0:
+                print('\nThere is nothing in your bag...\n')
+            else:
+                print(f'\n{player.name} looks in their bag and sees\n')
+                player.check_items()
+                selection = input(f'\nDo you want to remove any of your items? [drop] [item name] or [no] \n')
+                if selection == 'no':
+                    pass
+                else:
+                    item = selection.split(' ')
+                    drop_item(item[1])
         else:
-            print('Your only choices are [n] [s] [e] [w] [q]')
+            print('Your only choices are [n] [s] [e] [w] [q] [l]')
     except AttributeError:
         print('Oh no')

@@ -7,14 +7,20 @@ class Player:
         self.name = name
         self.current_room = current_room
 
-        # if items = None:
-        #     self.items = []
-        # else:
-        #     self.items = items
         self.items = [] if items == None else items
+
+    def check_items(self):
+        if len(self.items) == 0:
+            print('\n nothing in the bag \n')
+        else:
+            for item in self.items:
+                print(f'\n{item}\n')
 
     def change_room(self, room):
         self.current_room = room
     
     def add_item(self, item):
         self.items.append(item)
+
+    def remove_item(self, item):
+        self.items.remove(item)

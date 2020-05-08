@@ -16,12 +16,15 @@ class Room:
     def add_item(self, item):
         self.items.append(item)
 
+    def remove_item(self, item):
+        self.items.remove(item)
+
     def speak_items(self):
         if len(self.items) == 0:
-            print('\n There is nothing useful in this room \n')
+            print('\n Nothing useful \n')
         else:
             for item in self.items:
-                print(f'\nThe room has {item.name}\n')
+                print(f'\n{item}\n')
 
     def __str__(self):
         return f'Room: {self.name} Description: {self.description}'
