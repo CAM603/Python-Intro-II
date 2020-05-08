@@ -1,5 +1,6 @@
 # Implement a class to hold room information. This should have name and
 # description attributes.
+PURPLE = "\033[1;35;40m"
 
 
 class Room:
@@ -21,10 +22,10 @@ class Room:
 
     def speak_items(self):
         if len(self.items) == 0:
-            print('\n Nothing useful \n')
+            print("\n Nothing useful \n")
         else:
             for item in self.items:
-                print(f'\n{item}\n')
+                print(f"\nA {item}\n")
 
     def __str__(self):
-        return f'Room: {self.name} Description: {self.description}'
+        return f"Room: {self.name} Description: {self.description}"
